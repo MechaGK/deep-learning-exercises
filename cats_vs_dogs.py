@@ -40,21 +40,23 @@ test_generator = train_datagen.flow_from_directory(
 )
 
 input_ = Input(shape=(150,150,3))
-conv_1 = Conv2D(64, (7, 7), activation='relu')(input_)
+conv_1 = Conv2D(8, (7, 7), activation='relu')(input_)
 max_1 = MaxPool2D((2,2))(conv_1)
-conv_2 = Conv2D(128, (5, 5), activation='relu')(max_1)
+conv_2 = Conv2D(16, (5, 5), activation='relu')(max_1)
 max_2 = MaxPool2D((2,2))(conv_2)
-conv_3 = Conv2D(256, (3,3), activation='relu')(max_2)
+conv_3 = Conv2D(32, (3,3), activation='relu')(max_2)
 max_3 = MaxPool2D((2,2))(conv_3)
-conv_4 = Conv2D(512, (3,3), activation = 'relu')(max_3)
+conv_4 = Conv2D(64, (3,3), activation = 'relu')(max_3)
 max_4 = MaxPool2D((3,3))(conv_4)
-conv_5 = Conv2D(2048, (4,4), activation = 'relu')(max_4) 
+conv_5 = Conv2D(128, (4,4), activation = 'relu')(max_4) 
 flatten_ = Flatten()(conv_5)
 dense_1 = Dense(128, activation = 'relu')(flatten_)
-out = Dense(1, activation = 'tanh')(dense_1)
+dropout_1 = Dropout(0.2)(dense_1)
+dense_2 = Dense(64, activation = 'relu')(dense_1)
+dropout_2 = Dropout(0.3)(dense_2)
+out = Dense(1, activation = 'tanh')(dropout_2)
 
 model = Model(inputs=input_, outputs=out)
-
 model.summary()
 
 model.compile(loss='binary_crossentropy',
