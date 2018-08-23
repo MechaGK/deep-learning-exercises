@@ -2,6 +2,7 @@ from keras.preprocessing.image import ImageDataGenerator
 from keras.preprocessing import image
 from keras import Input, Model
 from keras.layers import Conv2D, Dense, MaxPool2D, Add, Flatten, Concatenate, Dropout
+from keras.models import load_model
 import matplotlib.pyplot as plt
 
 
@@ -50,11 +51,13 @@ conv_4 = Conv2D(64, (3,3), activation = 'relu')(max_3)
 max_4 = MaxPool2D((3,3))(conv_4)
 conv_5 = Conv2D(128, (4,4), activation = 'relu')(max_4) 
 flatten_ = Flatten()(conv_5)
-dense_1 = Dense(128, activation = 'relu')(flatten_)
-dropout_1 = Dropout(0.2)(dense_1)
-dense_2 = Dense(64, activation = 'relu')(dense_1)
-dropout_2 = Dropout(0.3)(dense_2)
+dense_1 = Dense(256, activation = 'relu')(flatten_)
+dropout_1 = Dropout(0.1)(dense_1)
+dense_2 = Dense(128, activation = 'relu')(dense_1)
+dropout_2 = Dropout(0.2)(dense_2)
 out = Dense(1, activation = 'tanh')(dropout_2)
+
+
 
 model = Model(inputs=input_, outputs=out)
 model.summary()
