@@ -50,11 +50,8 @@ conv_4 = Conv2D(512, (3,3), activation = 'relu')(max_3)
 max_4 = MaxPool2D((3,3))(conv_4)
 conv_5 = Conv2D(2048, (4,4), activation = 'relu')(max_4) 
 flatten_ = Flatten()(conv_5)
-dense_1 = Dense(1024, activation = 'relu')(flatten_)
-dense_2 = Dense(512, activation = 'relu')(dense_1)
-dense_3 = Dense(128, activation = 'relu')(dense_2)
-concat_ = Concatenate()([dense_3, flatten_])
-out = Dense(1, activation = 'sigmoid')(concat_)
+dense_1 = Dense(128, activation = 'relu')(flatten_)
+out = Dense(1, activation = 'tanh')(dense_1)
 
 model = Model(inputs=input_, outputs=out)
 
@@ -66,8 +63,8 @@ model.compile(loss='binary_crossentropy',
 
 history = model.fit_generator(
     train_generator,
-    steps_per_epoch = 100,
-    epochs = 50,
+    steps_per_epoch = 100,  
+    epochs = 30,
     validation_data=test_generator,
     validation_steps=50
 )
